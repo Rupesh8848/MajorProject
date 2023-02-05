@@ -1,0 +1,14 @@
+.global-search-bar{
+    outline: none;
+    height: 1.5rem;
+    border-radius: 10px;
+    border: none;
+    padding-left: 10px;
+}
+
+.global-search-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
