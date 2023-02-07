@@ -8,6 +8,8 @@ import { connectMetaMask } from "./setup";
 import axios from "axios";
 import { baseUrl } from "./BaseUrl";
 
+import { getPublicKey, encKeywithPublic, decKeywithPrivate } from './Functions/Functions'
+
 function App() {
   const [modalState, setModalState] = React.useState("hide");
   const [columnSearchStatus, setColumnSearchStatus] = React.useState(false);
@@ -29,6 +31,7 @@ function App() {
       });
     }
     main();
+    getPublicKey();
   }, []);
 
   async function fetchUserFromBackendDB(User) {
