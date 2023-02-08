@@ -7,10 +7,12 @@ import { Address } from "../Utils/ContractAddress";
 import PublicABI from "../Utils/PublicABI.json";
 import axios from "axios";
 import { baseUrl } from "../BaseUrl";
+import { uploadFileToDb, uploadFileToFolder } from "../Functions/uploadToDB";
 
 export default function Upload({ files }) {
   const { setLoaderState } = React.useContext(loaderContext);
-
+  const [createFolder, setCreateFolder] = React.useState(false);
+  const [folderName, setFolderName] = React.useState("");
   const token =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDY2NGIxYmM5M2I3QzEwMTkyZmM1Mjg5N2M1MWQ1QUY4N0EzRDVGNEEiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NzU0MzM5OTYzNDEsIm5hbWUiOiJ0ZXN0In0.9dzODdrxRqXyG_kt-4Uc5g_7Pu-ZOyfjq6YcqnehAh0";
 
@@ -45,26 +47,41 @@ export default function Upload({ files }) {
     );
     try {
       console.log(fileCids);
-      // const response = await fileCids.map(
-      //   async (file) => await contract.addcid(file.cid, file.name)
-      // );
-      // await response.wait();
-      for (let fileObj of fileCids) {
-        const response = await contract.addcid(fileObj.cid, fileObj.name);
-        await response.wait();
-        await axios.post(`${baseUrl}/api/file`, {
-          name: fileObj.name,
-          cid: fileObj.cid,
-          size: fileObj.size,
-          user: user._id,
+      if (createFolder) {
+        var folderObj = await axios.post(`${baseUrl}/api/folder`, {
+          name: folderName,
+          user,
         });
-        console.log(response);
+      }
+      for (let fileObj of fileCids) {
+        // const response = await contract.addcid(fileObj.cid, fileObj.name);
+        // await response.wait();
+        if (!createFolder) {
+          await uploadFileToDb({ fileObj, user });
+        } else {
+          await uploadFileToFolder({ fileObj, user, folderObj });
+        }
       }
       console.log("File successfully added to blockchain");
     } catch (error) {
       console.log("Error adding file");
     }
+
     setLoaderState(false);
   }
-  return <button onClick={handleFileUpload}>Upload</button>;
+  return (
+    <>
+      {createFolder && (
+        <input
+          placeholder="Folder Name"
+          value={folderName}
+          onChange={(event) => setFolderName(event.target.value)}
+        />
+      )}
+      <button onClick={() => setCreateFolder((oldState) => !oldState)}>
+        {!createFolder ? "Create Folder" : "Cancel Folder"}
+      </button>
+      <button onClick={handleFileUpload}>Upload</button>
+    </>
+  );
 }

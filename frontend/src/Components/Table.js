@@ -6,16 +6,19 @@ import {
   useTable,
   useSortBy,
 } from "react-table";
+import { tableContext } from "../Context/tableDataContext";
 import { COLUMNS } from "../Utils/Columns";
 // import MOCK_DATA from "../Utils/MOCK_DATA.json";
 import { CheckBox } from "./Checkbox";
 import ColumnFilter from "./ColumnFilter";
+import DeleteSelected from "./DeleteSelected";
 import GlobalFilter from "./GlobalFilter";
 import "./Table.css";
 
-export default function BasicTable({ cloumnSearchStatus, tableData }) {
+export default function BasicTable({ cloumnSearchStatus }) {
+  const { tableState } = React.useContext(tableContext);
   const columns = useMemo(() => COLUMNS, []);
-  const data = useMemo(() => tableData, []);
+  const data = useMemo(() => tableState, []);
 
   const defaultColumn = useMemo(() => {
     return {
@@ -61,6 +64,10 @@ export default function BasicTable({ cloumnSearchStatus, tableData }) {
     setGlobalFilter,
     selectedFlatRows, //contins the selected row data
   } = tableInstance;
+
+  // React.useEffect(() => {
+  //   console.log(selectedFlatRows);
+  // }, [selectedFlatRows]);
 
   const { globalFilter } = state;
 
@@ -117,6 +124,9 @@ export default function BasicTable({ cloumnSearchStatus, tableData }) {
           </table>
         </div>
       </section>
+      {selectedFlatRows.length !== 0 && (
+        <DeleteSelected selectedObjects={selectedFlatRows} />
+      )}
     </>
   );
 }

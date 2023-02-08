@@ -6,9 +6,13 @@ const userSchema = new mongoose.Schema(
       type: String,
       require: true,
     },
-    rootDirectory: {
+    files: {
       type: [mongoose.Types.ObjectId],
       ref: "File",
+    },
+    folders: {
+      type: [mongoose.Types.ObjectId],
+      ref: "Folder",
     },
   },
   {
