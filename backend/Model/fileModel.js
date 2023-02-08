@@ -6,6 +6,14 @@ const fileSchema = new mongoose.Schema(
     cid: String,
     size: Number,
     user: { type: mongoose.Types.ObjectId, ref: "User" },
+    type: {
+      type: String,
+      default: "file",
+    },
+    containingFolder: {
+      type: mongoose.Types.ObjectId,
+      ref: "Folder",
+    },
   },
   {
     toJSON: { virtuals: true },
