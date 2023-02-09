@@ -3,6 +3,8 @@ import fileSize from "file-size";
 import React from "react";
 import axios from "axios";
 import { baseUrl } from "../BaseUrl";
+import UpdateTable from "../hooks/UpdateTable";
+import Modal from "../Components/Modal";
 export const COLUMNS = [
   {
     Header: "Name",
@@ -11,7 +13,6 @@ export const COLUMNS = [
       const { cid, type, name } = row.values;
       if (type === "file") {
         let link = `https://${cid}.ipfs.w3s.link/${name}`;
-
         return <a href={link}>{name}</a>;
       } else if (type === "folder") {
         async function handleClick() {
@@ -19,7 +20,8 @@ export const COLUMNS = [
           const response = await axios.get(
             `${baseUrl}/api/folder/${row.original.id}`
           );
-          console.log(response.data);
+          console.log(response.data.contains);
+          return <Modal>This is modal</Modal>;
         }
         return <div onClick={handleClick}>{row.values.name}</div>;
       }

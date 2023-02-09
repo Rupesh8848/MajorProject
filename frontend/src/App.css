@@ -1,0 +1,44 @@
+.main{
+    height: 100vh;
+    padding-top: 1rem;
+}
+
+.header-buttons{
+    display: flex;
+    position: absolute;
+    justify-content: space-between;
+    width: 80vw;
+    left: 9.5vw;
+}
+
+.upload-button{
+    border: 2px solid black;
+    background-color: white;
+    color: black;
+    padding: 14px 28px;
+  font-size: 12px;
+  /* margin: 4px 2px; */
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.upload-button:hover{
+background-color: #054af8;
+  color: white;
+}
+
+.columnSearch{
+    border: 2px solid black;
+    background-color: white;
+    color: black;
+    padding: 14px 28px;
+  font-size: 12px;
+  /* margin: 4px 2px; */
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.columnSearch:hover{
+    background-color: #4f05b8;
+  color: white;
+}

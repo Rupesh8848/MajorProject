@@ -3,11 +3,14 @@ import { ethers } from "ethers";
 import React from "react";
 import { baseUrl } from "../BaseUrl";
 import { loaderContext } from "../Context/loaderContext";
+import { UserContext } from "../Context/userContext";
 import { Address } from "../Utils/ContractAddress";
 import PublicABI from "../Utils/PublicABI.json";
+import "./DeleteSelected.css";
 
 export default function DeleteSelected({ selectedObjects }) {
   const { setLoaderState } = React.useContext(loaderContext);
+  const { user } = React.useContext(UserContext);
   async function deleteSelected() {
     setLoaderState(true);
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -20,12 +23,15 @@ export default function DeleteSelected({ selectedObjects }) {
     try {
       for (let obj of selectedObjects) {
         console.log(obj.original.cid);
+        // console.log(user);
         try {
           const response = await contract.removecid(obj.original.cid);
           await response.wait();
           console.log(response);
           if (obj.original.type === "file") {
-            await axios.delete(`${baseUrl}/api/file/${obj.original._id}`);
+            await axios.delete(
+              `${baseUrl}/api/file/${user._id}/${obj.original._id}`
+            );
           }
         } catch (error) {
           console.log("error", error);
@@ -36,5 +42,9 @@ export default function DeleteSelected({ selectedObjects }) {
     }
     setLoaderState(false);
   }
-  return <button onClick={deleteSelected}>Delete Selected</button>;
+  return (
+    <button onClick={deleteSelected} className="deleteButton">
+      Delete Selected
+    </button>
+  );
 }

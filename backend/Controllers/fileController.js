@@ -38,10 +38,16 @@ const postFile = async (req, res) => {
 };
 
 const deleteFile = async (req, res) => {
-  const { id } = req.params;
+  const { userId, id } = req.params;
   console.log("Delete Request with id: ", id);
   try {
     const file = await fileModel.findByIdAndDelete(id);
+    await folderModel.findByIdAndUpdate(file.containingFolder, {
+      $pop: { contains: id },
+    });
+    await userModel.findByIdAndUpdate(userId, {
+      $pop: { files: id },
+    });
     return res.json("Delete Successful.");
   } catch (error) {
     return res.json({ message: "Error Deleting File", error });

@@ -54,8 +54,8 @@ export default function Upload({ files }) {
         });
       }
       for (let fileObj of fileCids) {
-        // const response = await contract.addcid(fileObj.cid, fileObj.name);
-        // await response.wait();
+        const response = await contract.addcid(fileObj.cid, fileObj.name);
+        await response.wait();
         if (!createFolder) {
           await uploadFileToDb({ fileObj, user });
         } else {
@@ -81,7 +81,12 @@ export default function Upload({ files }) {
       <button onClick={() => setCreateFolder((oldState) => !oldState)}>
         {!createFolder ? "Create Folder" : "Cancel Folder"}
       </button>
-      <button onClick={handleFileUpload}>Upload</button>
+      <button
+        onClick={handleFileUpload}
+        disabled={files.length == 0 ? true : false}
+      >
+        Upload
+      </button>
     </>
   );
 }
