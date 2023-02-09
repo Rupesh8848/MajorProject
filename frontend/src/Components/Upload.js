@@ -121,6 +121,7 @@ export default function Upload({ files }) {
         );
         await response.wait();
         if (!createFolder) {
+          console.log(fileObj);
           await uploadFileToDb({ fileObj, user });
         } else {
           await uploadFileToFolder({ fileObj, user, folderObj });
