@@ -6,16 +6,74 @@ import {
   useTable,
   useSortBy,
 } from "react-table";
-import { COLUMNS } from "../Utils/Columns";
+import { tableContext } from "../Context/tableDataContext";
+// import { COLUMNS } from "../Utils/Columns";
 // import MOCK_DATA from "../Utils/MOCK_DATA.json";
 import { CheckBox } from "./Checkbox";
 import ColumnFilter from "./ColumnFilter";
+import DeleteSelected from "./DeleteSelected";
 import GlobalFilter from "./GlobalFilter";
+import moment from "moment";
+import fileSize from "file-size";
+import axios from "axios";
+import { baseUrl } from "../BaseUrl";
 import "./Table.css";
+import DownloadSelected from "./DownloadSelected";
 
-export default function BasicTable({ cloumnSearchStatus, tableData }) {
-  const columns = useMemo(() => COLUMNS, []);
-  const data = useMemo(() => tableData, []);
+export default function BasicTable({ cloumnSearchStatus }) {
+  const { tableState, settableState } = React.useContext(tableContext);
+  const columns = useMemo(
+    () => [
+      {
+        Header: "Name",
+        accessor: "name",
+        Cell: ({ row }) => {
+          const { cid, type, name } = row.values;
+          if (type === "file") {
+            let link = `https://${cid}.ipfs.w3s.link/${name}`;
+            return (
+              <a href={link} target="_blank">
+                {name}
+              </a>
+            );
+          } else if (type === "folder") {
+            async function handleClick() {
+              console.log(row.original);
+              const response = await axios.get(
+                `${baseUrl}/api/folder/${row.original.id}`
+              );
+              settableState(response.data.contains);
+            }
+            return <div onClick={handleClick}>{row.values.name}</div>;
+          }
+        },
+      },
+      {
+        Header: "CID",
+        accessor: "cid",
+      },
+      {
+        Header: "Type",
+        accessor: "type",
+      },
+      {
+        Header: "Size",
+        accessor: "size",
+        Cell: ({ value }) => {
+          return fileSize(value).human();
+        },
+      },
+      {
+        Header: "Date",
+        accessor: "createdAt",
+        Cell: ({ value }) => {
+          return moment(value).fromNow();
+        },
+      },
+    ],
+    []
+  );
+  const data = useMemo(() => tableState, [tableState]);
 
   const defaultColumn = useMemo(() => {
     return {
@@ -62,18 +120,21 @@ export default function BasicTable({ cloumnSearchStatus, tableData }) {
     selectedFlatRows, //contins the selected row data
   } = tableInstance;
 
+  // React.useEffect(() => {
+  //   console.log(selectedFlatRows);
+  // }, [selectedFlatRows]);
+
   const { globalFilter } = state;
 
   return (
     <>
       <section className="container-with-global-search">
-        <div className="global-filter-search">
-          <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
-        </div>
-
         <div className="table-container">
-          <table {...getTableProps}>
-            <thead>
+          <div className="global-filter-search">
+            <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+          </div>
+          <table {...getTableProps} className="table">
+            <thead className="table__header">
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
@@ -115,6 +176,18 @@ export default function BasicTable({ cloumnSearchStatus, tableData }) {
               })}
             </tbody>
           </table>
+        </div>
+        <div className="bottom-button">
+          <div>
+            {selectedFlatRows.length !== 0 && (
+              <DownloadSelected selectedObjects={selectedFlatRows} />
+            )}
+          </div>
+          <div>
+            {selectedFlatRows.length !== 0 && (
+              <DeleteSelected selectedObjects={selectedFlatRows} />
+            )}
+          </div>
         </div>
       </section>
     </>

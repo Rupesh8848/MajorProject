@@ -5,7 +5,8 @@ const userChecker = async (req, res) => {
   console.log("Meta mask id: ", userMetaMaskId);
   var user = await userModel
     .findOne({ userMetaMaskId })
-    .populate("rootDirectory");
+    .populate("files")
+    .populate("folders");
   if (!user) {
     user = await userModel.create({ userMetaMaskId });
   }
