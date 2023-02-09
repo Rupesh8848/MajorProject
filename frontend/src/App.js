@@ -20,7 +20,7 @@ function App() {
   const { user, setUser } = React.useContext(UserContext);
   const { loaderState, setLoaderState } = React.useContext(loaderContext);
 
-  const { tableState, settableState } = React.useContext(tableContext);
+  const { settableState } = React.useContext(tableContext);
   React.useEffect(() => {
     async function main() {
       setLoaderState(true);
@@ -78,7 +78,7 @@ function App() {
             </button>
           </div>
 
-          <BasicTable cloumnSearchStatus={(columnSearchStatus, user)} />
+          <BasicTable cloumnSearchStatus={columnSearchStatus} user={user} />
         </div>
       )}
     </div>
