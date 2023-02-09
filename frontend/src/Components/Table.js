@@ -29,6 +29,7 @@ import PrivateABI from "../Utils/PrivateABI.json";
 export default function BasicTable({ cloumnSearchStatus, user }) {
   const { tableState, settableState } = React.useContext(tableContext);
   const { sliderState } = React.useContext(sliderContext);
+
   const columns = useMemo(
     () => [
       {
@@ -137,34 +138,39 @@ export default function BasicTable({ cloumnSearchStatus, user }) {
 
   const { globalFilter } = state;
 
-  // async function getYourFile(cid) {
-  //   const client = createClient();
-  //   const res = await client.get(cid);
-  //   const files = await res.files();
-  //   const provider = new ethers.providers.Web3Provider(window.ethereum);
-  //   const contract = new ethers.Contract(
-  //     Address.privateupload,
-  //     PrivateABI.abi,
-  //     user
-  //   );
-  //   const accounts = await provider.listAccounts();
-  //   const array = await contract.getusercid(accounts[0]);
-  //   const reqFileObj = array.forEach((fileObj) => {
-  //     if (fileObj.CID === cid) {
-  //       return fileObj;
-  //     }
-  //   });
-  //   var { CID, key, iv } = reqFileObj;
-  //   try {
-  //     const buffer = Buffer.from(iv, "hex");
-  //     const inv = new Uint8Array(buffer);
-  //     console.log(inv);
+  async function getYourFile(cid) {
+    const client = createClient();
+    const res = await client.get(cid);
+    const files = await res.files();
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(
+      Address.privateupload[0],
+      PrivateABI.abi,
+      signer
+    );
+    const accounts = await provider.listAccounts();
 
-  //     await startDecryption(files[0], key, inv);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+    const array = await contract.getusercid(accounts[0]);
+    console.log(array);
+    var key, iv;
+    array.forEach((fileObj) => {
+      if (fileObj.CID === cid) {
+        console.log(fileObj);
+        key = fileObj.key;
+        iv = fileObj.iv;
+      }
+    });
+    try {
+      const buffer = Buffer.from(iv, "hex");
+      const inv = new Uint8Array(buffer);
+      console.log(inv);
+
+      await startDecryption(files[0], key, inv);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <>
@@ -220,7 +226,10 @@ export default function BasicTable({ cloumnSearchStatus, user }) {
         <div className="bottom-button">
           <div>
             {selectedFlatRows.length !== 0 && (
-              <DownloadSelected selectedObjects={selectedFlatRows} />
+              <DownloadSelected
+                selectedObjects={selectedFlatRows}
+                getYourFile={getYourFile}
+              />
             )}
           </div>
           <div>
