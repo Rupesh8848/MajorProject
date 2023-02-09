@@ -16,7 +16,6 @@ const fileSchema = new mongoose.Schema(
     },
     protected: {
       type: String,
-      default: "public",
     },
   },
   {

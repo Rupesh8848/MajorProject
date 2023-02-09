@@ -8,6 +8,7 @@ export const uploadFileToDb = async ({ fileObj, user }) => {
     cid: fileObj.cid,
     size: fileObj.size,
     user: user._id,
+    protected: fileObj.protected,
   });
   console.log(response);
 };
@@ -28,6 +29,7 @@ export const uploadFileToFolder = async ({ fileObj, folderObj, user }) => {
     size: fileObj.size,
     user: user._id,
     containingFolder: folderObj.data._id,
+    protected: fileObj.protected,
   });
   console.log(response);
 };

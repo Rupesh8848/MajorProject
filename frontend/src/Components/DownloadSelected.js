@@ -4,7 +4,7 @@ import fileDownload from "js-file-download";
 import "./DownloadSelected.css";
 import { loaderContext } from "../Context/loaderContext";
 
-export default function DownloadSelected({ selectedObjects }) {
+export default function DownloadSelected({ selectedObjects, getYourFile }) {
   const { setLoaderState } = React.useContext(loaderContext);
   const urls = [];
   const downloadSelected = async () => {
@@ -12,8 +12,12 @@ export default function DownloadSelected({ selectedObjects }) {
     selectedObjects.forEach((obj) => {
       const { cid, name } = obj.original;
       console.log(obj);
-      let link = `https://${cid}.ipfs.w3s.link/${name}`;
-      urls.push({ link, name });
+      if (obj.original.protected === "public") {
+        let link = `https://${cid}.ipfs.w3s.link/${name}`;
+        urls.push({ link, name });
+      } else {
+        getYourFile(cid);
+      }
     });
     for (let obj of urls) {
       await axios.get(obj.link, { responseType: "blob" }).then((res) => {
