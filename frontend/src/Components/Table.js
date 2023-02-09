@@ -19,9 +19,16 @@ import axios from "axios";
 import { baseUrl } from "../BaseUrl";
 import "./Table.css";
 import DownloadSelected from "./DownloadSelected";
+import { sliderContext } from "../Context/sliderContext";
+import { createClient } from "../Utils/createClient";
+import { startDecryption } from "../encFunctions";
+import { ethers } from "ethers";
+import { Address } from "../Utils/ContractAddress";
+import PrivateABI from "../Utils/PrivateABI.json";
 
-export default function BasicTable({ cloumnSearchStatus }) {
+export default function BasicTable({ cloumnSearchStatus, user }) {
   const { tableState, settableState } = React.useContext(tableContext);
+  const { sliderState } = React.useContext(sliderContext);
   const columns = useMemo(
     () => [
       {
@@ -64,6 +71,10 @@ export default function BasicTable({ cloumnSearchStatus }) {
         },
       },
       {
+        Header: "Protection",
+        accessor: "protected",
+      },
+      {
         Header: "Date",
         accessor: "createdAt",
         Cell: ({ value }) => {
@@ -73,7 +84,18 @@ export default function BasicTable({ cloumnSearchStatus }) {
     ],
     []
   );
-  const data = useMemo(() => tableState, [tableState]);
+  const data = useMemo(
+    () => tableState,
+    // tableState.map((fileData) => {
+    //   if (fileData.protected === sliderState) {
+    //     console.log("Switched to protected mode.");
+    //     console.log(fileData);
+    //     return fileData;
+    //   }
+    //   return [];
+    // }
+    [tableState, sliderState]
+  );
 
   const defaultColumn = useMemo(() => {
     return {
@@ -125,6 +147,35 @@ export default function BasicTable({ cloumnSearchStatus }) {
   // }, [selectedFlatRows]);
 
   const { globalFilter } = state;
+
+  async function getYourFile(cid) {
+    const client = createClient();
+    const res = await client.get(cid);
+    const files = await res.files();
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const contract = new ethers.Contract(
+      Address.privateupload,
+      PrivateABI.abi,
+      user
+    );
+    const accounts = await provider.listAccounts();
+    const array = await contract.getusercid(accounts[0]);
+    const reqFileObj = array.forEach((fileObj) => {
+      if (fileObj.CID === cid) {
+        return fileObj;
+      }
+    });
+    var { CID, key, iv } = reqFileObj;
+    try {
+      const buffer = Buffer.from(iv, "hex");
+      const inv = new Uint8Array(buffer);
+      console.log(inv);
+
+      await startDecryption(files[0], key, inv);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <>

@@ -3,7 +3,7 @@ const { folderModel } = require("../Model/folderModel");
 const { userModel } = require("../Model/userModel");
 
 const postFile = async (req, res) => {
-  const { name, cid, size, user, containingFolder } = req.body;
+  const { name, cid, size, user, containingFolder, protected } = req.body;
   try {
     const file = await fileModel.create({
       name,
@@ -11,6 +11,7 @@ const postFile = async (req, res) => {
       size,
       user,
       containingFolder: containingFolder ? containingFolder : null,
+      protected: protected ? protected : "public",
     });
 
     if (!containingFolder) {
