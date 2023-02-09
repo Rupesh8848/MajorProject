@@ -10,6 +10,7 @@ import { baseUrl } from "./BaseUrl";
 import { tableContext } from "./Context/tableDataContext";
 import { modalContext } from "./Context/modalContext";
 import { DropZone } from "./Components/DropZone";
+import "./App.css";
 
 function App() {
   const [columnSearchStatus, setColumnSearchStatus] = React.useState(false);
@@ -52,22 +53,26 @@ function App() {
 
       {/* main app  */}
       {!intialLoading && (
-        <div>
-          <button
-            onClick={() => {
-              setModalState("show");
-            }}
-          >
-            Upload
-          </button>
+        <div className="main">
+          <div className="header-buttons">
+            <button
+              onClick={() => {
+                setModalState("show");
+              }}
+              className="upload-button"
+            >
+              Upload
+            </button>
 
-          <button
-            onClick={() => {
-              setColumnSearchStatus((oldStatus) => !oldStatus);
-            }}
-          >
-            Column Search
-          </button>
+            <button
+              onClick={() => {
+                setColumnSearchStatus((oldStatus) => !oldStatus);
+              }}
+              className="columnSearch"
+            >
+              Column Search
+            </button>
+          </div>
 
           <BasicTable cloumnSearchStatus={columnSearchStatus} />
         </div>

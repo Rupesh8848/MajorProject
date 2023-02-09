@@ -3,6 +3,6 @@ const { postFile, deleteFile } = require("../Controllers/fileController");
 const fileRouter = express.Router();
 
 fileRouter.post("/", postFile);
-fileRouter.delete("/:id", deleteFile);
+fileRouter.delete("/:userId/:id", deleteFile);
 
 module.exports = { fileRouter };
