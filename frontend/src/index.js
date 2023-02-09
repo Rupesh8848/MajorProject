@@ -6,6 +6,7 @@ import { UserProvider } from "./Context/userContext";
 import { LoaderProvider } from "./Context/loaderContext";
 import { TableProvider } from "./Context/tableDataContext";
 import { ModalProvider } from "./Context/modalContext";
+import { SliderProvider } from "./Context/sliderContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -13,7 +14,9 @@ root.render(
     <LoaderProvider>
       <TableProvider>
         <ModalProvider>
-          <App />
+          <SliderProvider>
+            <App />
+          </SliderProvider>
         </ModalProvider>
       </TableProvider>
     </LoaderProvider>

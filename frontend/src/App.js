@@ -11,6 +11,7 @@ import { tableContext } from "./Context/tableDataContext";
 import { modalContext } from "./Context/modalContext";
 import { DropZone } from "./Components/DropZone";
 import "./App.css";
+import SliderSwitch from "./Components/SliderSwitch";
 
 import { getPublicKey, encKeywithPublic, decKeywithPrivate } from './Functions/Functions'
 
@@ -67,6 +68,9 @@ function App() {
               Upload
             </button>
 
+            <div>
+              <SliderSwitch />
+            </div>
             <button
               onClick={() => {
                 setColumnSearchStatus((oldStatus) => !oldStatus);
@@ -77,7 +81,7 @@ function App() {
             </button>
           </div>
 
-          <BasicTable cloumnSearchStatus={columnSearchStatus} />
+          <BasicTable cloumnSearchStatus={(columnSearchStatus, user)} />
         </div>
       )}
     </div>
