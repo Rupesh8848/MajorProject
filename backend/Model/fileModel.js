@@ -14,6 +14,10 @@ const fileSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "Folder",
     },
+    protected: {
+      type: String,
+      default: "public",
+    },
   },
   {
     toJSON: { virtuals: true },
