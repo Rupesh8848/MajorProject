@@ -84,18 +84,7 @@ export default function BasicTable({ cloumnSearchStatus, user }) {
     ],
     []
   );
-  const data = useMemo(
-    () => tableState,
-    // tableState.map((fileData) => {
-    //   if (fileData.protected === sliderState) {
-    //     console.log("Switched to protected mode.");
-    //     console.log(fileData);
-    //     return fileData;
-    //   }
-    //   return [];
-    // }
-    [tableState, sliderState]
-  );
+  const data = useMemo(() => tableState, [tableState, sliderState]);
 
   const defaultColumn = useMemo(() => {
     return {
@@ -148,34 +137,34 @@ export default function BasicTable({ cloumnSearchStatus, user }) {
 
   const { globalFilter } = state;
 
-  async function getYourFile(cid) {
-    const client = createClient();
-    const res = await client.get(cid);
-    const files = await res.files();
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const contract = new ethers.Contract(
-      Address.privateupload,
-      PrivateABI.abi,
-      user
-    );
-    const accounts = await provider.listAccounts();
-    const array = await contract.getusercid(accounts[0]);
-    const reqFileObj = array.forEach((fileObj) => {
-      if (fileObj.CID === cid) {
-        return fileObj;
-      }
-    });
-    var { CID, key, iv } = reqFileObj;
-    try {
-      const buffer = Buffer.from(iv, "hex");
-      const inv = new Uint8Array(buffer);
-      console.log(inv);
+  // async function getYourFile(cid) {
+  //   const client = createClient();
+  //   const res = await client.get(cid);
+  //   const files = await res.files();
+  //   const provider = new ethers.providers.Web3Provider(window.ethereum);
+  //   const contract = new ethers.Contract(
+  //     Address.privateupload,
+  //     PrivateABI.abi,
+  //     user
+  //   );
+  //   const accounts = await provider.listAccounts();
+  //   const array = await contract.getusercid(accounts[0]);
+  //   const reqFileObj = array.forEach((fileObj) => {
+  //     if (fileObj.CID === cid) {
+  //       return fileObj;
+  //     }
+  //   });
+  //   var { CID, key, iv } = reqFileObj;
+  //   try {
+  //     const buffer = Buffer.from(iv, "hex");
+  //     const inv = new Uint8Array(buffer);
+  //     console.log(inv);
 
-      await startDecryption(files[0], key, inv);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  //     await startDecryption(files[0], key, inv);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   return (
     <>
