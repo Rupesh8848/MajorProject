@@ -11,7 +11,7 @@ const downloadSlice = createSlice({
     },
     removeFileFromDownload(state, action) {
       state.downloadList = state.downloadList.filter(
-        (cid) => cid !== action.payload
+        (file) => file.cid !== action.payload.cid
       );
     },
   },

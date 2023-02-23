@@ -140,7 +140,6 @@ export default function Upload({ files }) {
       <button
         className="px-[10px] py-[5px] border-[2px] border-solid border-[rgba(0,0,0,0.5)]"
         onClick={() => {
-          dispatch(showSpinner());
           sliderState === "public"
             ? handleFileUpload()
             : handlePrivateFileUpload();

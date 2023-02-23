@@ -24,18 +24,18 @@ export default function FileRenderer({ files }) {
           >
             <span
               onClick={() =>
-                downloadList.includes(cid)
-                  ? dispatch(removeFileFromDownload(cid))
-                  : dispatch(addFileToDownload(cid))
+                downloadList.includes(file)
+                  ? dispatch(removeFileFromDownload(file))
+                  : dispatch(addFileToDownload(file))
               }
             >
               {file.protected === "protected" ? (
-                downloadList.includes(cid) ? (
+                downloadList.includes(file) ? (
                   <FaCheckCircle className="scale-[1.8] text-[rgb(51,185,67)]" />
                 ) : (
                   <RiFileLockFill className="scale-[1.8] text-[rgb(95,99,104)]" />
                 )
-              ) : downloadList.includes(cid) ? (
+              ) : downloadList.includes(file) ? (
                 <FaCheckCircle className="scale-[1.8] text-[rgb(51,185,67)]" />
               ) : (
                 <FaFile className="scale-150 text-[rgb(95,99,104)]" />

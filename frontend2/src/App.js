@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import DownloadSelected from "./Components/DownloadSelected";
 import MainContainer from "./Components/MainContainer";
 import SliderSwitch from "./Components/SliderSwitch";
 import Spinner from "./Components/Spinner";
@@ -15,22 +16,20 @@ function App() {
 
   const { spinnerState } = useSelector((state) => state.spinner);
 
+  const { downloadList } = useSelector((state) => state.download);
+
   React.useEffect(() => {
     async function main() {
+      dispatch(showSpinner());
       setLoadStateComplete(false);
       await dispatch(setUser());
       setLoadStateComplete(true);
+      dispatch(hideSpinner());
     }
     main();
   }, []);
 
   // console.log(User);
-
-  if (!loadStateComplete) {
-    dispatch(showSpinner());
-  } else {
-    dispatch(hideSpinner());
-  }
 
   return (
     <>
@@ -44,12 +43,16 @@ function App() {
           <button onClick={() => setUploadModalVisible(true)}>
             Upload Button
           </button>
+          <span>
+            {downloadList.length > 0 &&
+              `${downloadList.length} files selected.`}
+          </span>
+          <span>{downloadList.length > 0 && <DownloadSelected />}</span>
           <SliderSwitch />
           <MainContainer />
           {uploadModalVisible && (
             <UploadModal modalVisToggler={setUploadModalVisible} />
           )}
-          {spinnerState === "show" && <Spinner />}
         </div>
       )}
     </>
