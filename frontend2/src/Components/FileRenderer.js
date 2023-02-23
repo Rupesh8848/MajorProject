@@ -1,22 +1,50 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Truncate from "react-truncate-string";
-import { FaFile } from "react-icons/fa";
+import { FaFile, FaCheckCircle } from "react-icons/fa";
+import { RiFileLockFill } from "react-icons/ri";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addFileToDownload,
+  removeFileFromDownload,
+} from "../Slices/DownloadSlice";
 export default function FileRenderer({ files }) {
+  const { downloadList } = useSelector((state) => state.download);
+  console.log(downloadList);
+  const dispatch = useDispatch();
   return !files?.length == 0 ? (
     <div>
       {files?.map((file) => {
-        console.log(file);
+        // console.log(file);
         const { cid, name } = file;
-        const fileExt = name.split(".").pop();
         const fileLink = `https://${cid}.ipfs.w3s.link/${name}`;
         return (
-          <Link to={fileLink} target="_blank" key={cid}>
-            <div className="flex items-center gap-[10px] border-[2px] inline-block w-fit px-[20px] py-[10px] rounded-[10px] cursor-pointer my-[20px]">
-              <FaFile className="scale-150 text-[rgb(95,99,104)]" />
-              <Truncate text={name} truncateAt={30} />
-            </div>
-          </Link>
+          <div
+            key={cid}
+            className="flex items-center gap-[10px] border-[2px] inline-block w-fit px-[20px] py-[10px] rounded-[10px] cursor-pointer my-[20px]"
+          >
+            <span
+              onClick={() =>
+                downloadList.includes(cid)
+                  ? dispatch(removeFileFromDownload(cid))
+                  : dispatch(addFileToDownload(cid))
+              }
+            >
+              {file.protected === "protected" ? (
+                downloadList.includes(cid) ? (
+                  <FaCheckCircle className="scale-[1.8] text-[rgb(51,185,67)]" />
+                ) : (
+                  <RiFileLockFill className="scale-[1.8] text-[rgb(95,99,104)]" />
+                )
+              ) : downloadList.includes(cid) ? (
+                <FaCheckCircle className="scale-[1.8] text-[rgb(51,185,67)]" />
+              ) : (
+                <FaFile className="scale-150 text-[rgb(95,99,104)]" />
+              )}
+            </span>
+            <Link to={fileLink} target="_blank">
+              {name}
+            </Link>
+          </div>
         );
       })}
     </div>

@@ -35,6 +35,7 @@ const postFile = async (req, res) => {
 
     return res.json("File Added");
   } catch (error) {
+    console.log(error);
     return res.json("Error adding file.", error);
   }
 };
