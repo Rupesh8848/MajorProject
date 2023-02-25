@@ -9,12 +9,19 @@ import {
 } from "../Slices/DownloadSlice";
 import FileCard from "./FileCard";
 import Lock from "../images/lock.jpg";
+import { addToRecent } from "../Slices/recentSlice";
+import moment from "moment";
 
 export default function FileRenderer({ files }) {
   const { downloadList } = useSelector((state) => state.download);
   console.log(downloadList);
   const { sliderState } = useSelector((state) => state.slider);
   const dispatch = useDispatch();
+
+  async function handleClick(fileId, user) {
+    dispatch(addToRecent({ fileId, user }));
+  }
+
   return !files?.length == 0 ? (
     <div className="flex gap-8 flex-grow">
       {files?.map((file) => {
@@ -25,16 +32,22 @@ export default function FileRenderer({ files }) {
           sliderState === file.protected && (
             <div
               key={cid}
-              className="flex flex-col items-center  border-[2px] inline-block w-fit rounded-[10px] cursor-pointer my-[20px] hover:bg-[rgb(240,240,240)] overflow-hidden"
+              className="flex flex-col pb-4 items-center  border-[2px] inline-block w-fit rounded-[10px] cursor-pointer my-[20px] hover:bg-[rgb(240,240,240)] overflow-hidden"
             >
               {console.log(
                 `SliderState = ${sliderState}    FileState = ${file.protected}`
               )}
               <Link to={fileLink} target="_blank">
                 {file.protected === "public" ? (
-                  <FileCard imgLink={`https://${cid}.ipfs.w3s.link/${name}`} />
+                  <FileCard
+                    imgLink={`https://${cid}.ipfs.w3s.link/${name}`}
+                    onClick={() => handleClick(file.id, file.user)}
+                  />
                 ) : (
-                  <FileCard imgLink={Lock} />
+                  <FileCard
+                    imgLink={Lock}
+                    onClick={() => handleClick(file.id, file.user)}
+                  />
                 )}
               </Link>
               <div className="flex gap-[10px] items-center py-4 px-2">
@@ -60,10 +73,15 @@ export default function FileRenderer({ files }) {
                   )}
                 </span>
                 <Link to={fileLink} target="_blank">
-                  <span>
+                  <div onClick={() => handleClick(file.id, file.user)}>
                     {name.length > 20 ? `${name.slice(0, 20)}...` : name}
-                  </span>
+                  </div>
                 </Link>
+              </div>
+              <div>
+                {file?.lastOpened
+                  ? `You opened it ${moment(file?.lastOpened).fromNow()}`
+                  : null}
               </div>
             </div>
           )

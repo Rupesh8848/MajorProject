@@ -9,6 +9,7 @@ import UploadModal from "./Components/UploadModal";
 import { hideSpinner, showSpinner } from "./Slices/spinnerSlice";
 import { setUser } from "./Slices/userSlice";
 import "./App.styles.css";
+import { getRecent } from "./Slices/recentSlice";
 
 function App() {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ function App() {
       dispatch(showSpinner());
       setLoadStateComplete(false);
       await dispatch(setUser());
+      dispatch(getRecent());
       setLoadStateComplete(true);
       dispatch(hideSpinner());
     }
@@ -44,21 +46,24 @@ function App() {
             uploadModalVisible ? "h-[100vh] overflow-hidden" : null
           }`}
         >
-          <Navbar />
-          <span>
+          {/* <span>
             {downloadList.length > 0 &&
               `${downloadList.length} files selected.`}
           </span>
-          <span>{downloadList.length > 0 && <DownloadSelected />}</span>
-          <main className="main">
-            <SideBar
-              setUploadModalVisible={setUploadModalVisible}
-              currentTab={currentTab}
-              setCurrentTab={setCurrentTab}
-              className="sidebar"
-            />
-            <MainContainer className="main-container" currentTab={currentTab} />
-          </main>
+          <span>{downloadList.length > 0 && <DownloadSelected />}</span> */}
+          <div className="h-[100vh]">
+            <Navbar />
+            <main className="main flex">
+              <SideBar
+                setUploadModalVisible={setUploadModalVisible}
+                currentTab={currentTab}
+                setCurrentTab={setCurrentTab}
+                className="sidebar z-0"
+              />
+              <MainContainer className="main-container" />
+            </main>
+          </div>
+
           {uploadModalVisible && (
             <UploadModal modalVisToggler={setUploadModalVisible} />
           )}

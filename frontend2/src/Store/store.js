@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import DownloadSlice from "../Slices/DownloadSlice";
+import recentSlice from "../Slices/recentSlice";
 import sliderSlice from "../Slices/sliderSlice";
 import spinnerSlice from "../Slices/spinnerSlice";
 import userDataSlice from "../Slices/userDataSlice";
@@ -12,6 +13,7 @@ const Store = configureStore({
     slider: sliderSlice,
     spinner: spinnerSlice,
     download: DownloadSlice,
+    recent: recentSlice,
   },
 });
 

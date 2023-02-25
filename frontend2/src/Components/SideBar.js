@@ -10,7 +10,7 @@ export default function SideBar({
   setCurrentTab,
 }) {
   return (
-    <section className="flex flex-col border-r-[1px] pr-[1rem] pt-4 ">
+    <section className="flex flex-col border-r-[1px] pr-[1rem] pt-4 h-[100%] bg-white ">
       <div
         onClick={() => setUploadModalVisible(true)}
         className=" flex justify-center w-[10rem] gap-1 border-[1px] ml-4 items-center font-semibold text-[1.2rem] px-[10px] py-[5px] rounded-full  cursor-pointer shadow hover:bg-[rbg(94,95,107)] hover:bg-[rgb(235,235,235)] hover:shadow-lg hover:translate-y-[-2px]"

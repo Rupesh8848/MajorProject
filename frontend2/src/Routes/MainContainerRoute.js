@@ -14,7 +14,7 @@ export default function MainContainerRoute() {
     getUserRoot();
   }, []);
   return !User?.loading ? (
-    <div>
+    <div className="">
       <div>Folders:</div>
       <FolderRenderer folders={User.data.folders} />
       <div>Files:</div>
