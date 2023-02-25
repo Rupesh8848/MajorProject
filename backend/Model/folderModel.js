@@ -10,7 +10,7 @@ const folderSchema = new mongoose.Schema(
       type: [mongoose.Types.ObjectId],
       ref: "File",
     },
-    user: mongoose.Types.ObjectId,
+    user: { type: mongoose.Types.ObjectId, ref: "User" },
   },
   {
     toObject: { virtuals: true },

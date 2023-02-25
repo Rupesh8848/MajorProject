@@ -141,6 +141,7 @@ export default function BasicTable({ cloumnSearchStatus, user }) {
   async function getYourFile(cid) {
     const client = createClient();
     const res = await client.get(cid);
+    console.log(res);
     const files = await res.files();
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
