@@ -5,7 +5,7 @@ import MainContainerRoute from "../Routes/MainContainerRoute";
 
 export default function MainContainer() {
   return (
-    <div className="px-4">
+    <div>
       <Routes>
         <Route index element={<MainContainerRoute />} />
         <Route path="/user/folder/:folderId" element={<FolderRoutes />} />

@@ -16,7 +16,7 @@ export default function FileRenderer({ files }) {
   const { sliderState } = useSelector((state) => state.slider);
   const dispatch = useDispatch();
   return !files?.length == 0 ? (
-    <div className="flex gap-8">
+    <div className="flex gap-8 flex-grow">
       {files?.map((file) => {
         // console.log(file);
         const { cid, name } = file;
