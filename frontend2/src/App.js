@@ -20,6 +20,8 @@ function App() {
 
   const { downloadList } = useSelector((state) => state.download);
 
+  const [currentTab, setCurrentTab] = React.useState(1);
+
   React.useEffect(() => {
     async function main() {
       dispatch(showSpinner());
@@ -51,9 +53,11 @@ function App() {
           <main className="main">
             <SideBar
               setUploadModalVisible={setUploadModalVisible}
+              currentTab={currentTab}
+              setCurrentTab={setCurrentTab}
               className="sidebar"
             />
-            <MainContainer className="main-container" />
+            <MainContainer className="main-container" currentTab={currentTab} />
           </main>
           {uploadModalVisible && (
             <UploadModal modalVisToggler={setUploadModalVisible} />

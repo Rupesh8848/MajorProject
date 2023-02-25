@@ -4,8 +4,11 @@ import { MdOutlineGroup } from "react-icons/md";
 import { TbClock } from "react-icons/tb";
 import { FiHardDrive } from "react-icons/fi";
 
-export default function SideBar({ setUploadModalVisible }) {
-  const [currentTab, setCurrentTab] = React.useState(1);
+export default function SideBar({
+  setUploadModalVisible,
+  currentTab,
+  setCurrentTab,
+}) {
   return (
     <section className="flex flex-col border-r-[1px] pr-[1rem] pt-4 ">
       <div

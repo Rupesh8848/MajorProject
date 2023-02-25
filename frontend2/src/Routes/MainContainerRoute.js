@@ -11,7 +11,8 @@ export default function MainContainerRoute() {
     async function getUserRoot() {
       disptach(setUser());
     }
-  });
+    getUserRoot();
+  }, []);
   return !User?.loading ? (
     <div>
       <div>Folders:</div>
