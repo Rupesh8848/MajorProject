@@ -8,7 +8,7 @@ const sliderSlice = createSlice({
       state.sliderState = "public";
     },
     setSliderToPrivate(state, action) {
-      state.sliderState = "private";
+      state.sliderState = "protected";
     },
   },
 });
