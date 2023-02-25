@@ -13,6 +13,8 @@ import { DropZone } from "./Components/DropZone";
 import "./App.css";
 import SliderSwitch from "./Components/SliderSwitch";
 
+import { getPublicKey, encKeywithPublic, decKeywithPrivate } from './Functions/Functions'
+
 function App() {
   const [columnSearchStatus, setColumnSearchStatus] = React.useState(false);
   const { modalState, setModalState } = React.useContext(modalContext);
@@ -34,6 +36,7 @@ function App() {
       });
     }
     main();
+    getPublicKey();
   }, []);
 
   async function fetchUserFromBackendDB(User) {
