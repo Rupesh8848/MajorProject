@@ -10,7 +10,7 @@ export default function RecentlyOpened() {
       {recent?.data?.dataToSend === 0 ? (
         <div>No Recent Files</div>
       ) : (
-        <FileRenderer files={recent?.data?.dataToSend} />
+        <FileRenderer files={recent?.recentFour?.dataToSend} />
       )}
     </>
   );

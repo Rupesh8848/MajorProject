@@ -9,6 +9,7 @@ export const uploadFileToDb = async ({ fileObj, user }) => {
     size: fileObj.size,
     user: user._id,
     protected: fileObj.protected,
+    fileType: fileObj.fileType,
   });
   console.log(response);
 };

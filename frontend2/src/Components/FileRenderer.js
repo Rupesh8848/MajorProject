@@ -11,6 +11,8 @@ import FileCard from "./FileCard";
 import Lock from "../images/lock.jpg";
 import { addToRecent } from "../Slices/recentSlice";
 import moment from "moment";
+import FilePreview from "./FilePreview";
+import { defaultStyles, FileIcon } from "react-file-icon";
 
 export default function FileRenderer({ files }) {
   const { downloadList } = useSelector((state) => state.download);
@@ -23,7 +25,7 @@ export default function FileRenderer({ files }) {
   }
 
   return !files?.length == 0 ? (
-    <div className="flex gap-8 flex-grow">
+    <div className="flex gap-8 flex-grow flex-wrap">
       {files?.map((file) => {
         // console.log(file);
         const { cid, name } = file;
@@ -32,22 +34,36 @@ export default function FileRenderer({ files }) {
           sliderState === file.protected && (
             <div
               key={cid}
-              className="flex flex-col pb-4 items-center  border-[2px] inline-block w-fit rounded-[10px] cursor-pointer my-[20px] hover:bg-[rgb(240,240,240)] overflow-hidden"
+              className="flex  flex-col pb-4 items-center  border-[2px] inline-block w-fit rounded-[10px] cursor-pointer my-[20px] hover:bg-[rgb(240,240,240)] overflow-hidden"
             >
               {console.log(
                 `SliderState = ${sliderState}    FileState = ${file.protected}`
               )}
               <Link to={fileLink} target="_blank">
                 {file.protected === "public" ? (
-                  <FileCard
-                    imgLink={`https://${cid}.ipfs.w3s.link/${name}`}
-                    onClick={() => handleClick(file.id, file.user)}
-                  />
+                  !file.fileType ||
+                  file.fileType.split("/").includes("image") ? (
+                    <span onClick={() => handleClick(file.id, file.user)}>
+                      <FileCard
+                        imgLink={`https://${cid}.ipfs.w3s.link/${name}`}
+                        // onClick={() => handleClick(file.id, file.user)}
+                      />
+                    </span>
+                  ) : (
+                    <span
+                      className="h-[250px] w-[250px] overflow-hidden"
+                      onClick={() => handleClick(file.id, file.user)}
+                    >
+                      <FilePreview fileType={name.split(".").slice(-1)} />
+                    </span>
+                  )
                 ) : (
-                  <FileCard
-                    imgLink={Lock}
-                    onClick={() => handleClick(file.id, file.user)}
-                  />
+                  <span onClick={() => handleClick(file.id, file.user)}>
+                    <FileCard
+                      imgLink={Lock}
+                      // onClick={() => handleClick(file.id, file.user)}
+                    />
+                  </span>
                 )}
               </Link>
               <div className="flex gap-[10px] items-center py-4 px-2">

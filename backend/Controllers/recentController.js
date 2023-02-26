@@ -55,4 +55,26 @@ const getRecent = async (req, res) => {
   }
 };
 
-module.exports = { addToRecent, getRecent };
+const getFourRecent = async (req, res) => {
+  const { user } = req.params;
+  try {
+    const data = await recentModel
+      .find({ user })
+      .populate("file")
+      .sort("-lastOpened");
+    console.log(data);
+    const dataToSend = data.slice(0, 4).map((element) => {
+      const { file } = element;
+      return {
+        ...file?._doc,
+        lastOpened: element?.lastOpened,
+      };
+    });
+    return res.json({ message: "Recent Data", dataToSend });
+  } catch (error) {
+    console.log("Error occured");
+    console.log(error);
+  }
+};
+
+module.exports = { addToRecent, getRecent, getFourRecent };
