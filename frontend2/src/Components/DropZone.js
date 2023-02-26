@@ -61,6 +61,8 @@ export function DropZone() {
     return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
   }, []);
 
+  console.log(files);
+
   return (
     <>
       <section className="container">

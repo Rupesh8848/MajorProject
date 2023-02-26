@@ -3,12 +3,14 @@ import { FaPlus } from "react-icons/fa";
 import { MdOutlineGroup } from "react-icons/md";
 import { TbClock } from "react-icons/tb";
 import { FiHardDrive } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 export default function SideBar({
   setUploadModalVisible,
   currentTab,
   setCurrentTab,
 }) {
+  const navigate = useNavigate();
   return (
     <section className="flex flex-col border-r-[1px] pr-[1rem] pt-4 h-[100%] bg-white ">
       <div
@@ -25,7 +27,10 @@ export default function SideBar({
               ? "bg-[rgb(197,208,227)] text-[rgb(64,104,192)]"
               : null
           }`}
-          onClick={() => setCurrentTab(1)}
+          onClick={() => {
+            setCurrentTab(1);
+            navigate("/");
+          }}
         >
           <FiHardDrive className="scale-[1.5]" />
           My Files
@@ -46,7 +51,10 @@ export default function SideBar({
               ? "bg-[rgb(197,208,227)] text-[rgb(64,104,192)]"
               : null
           }`}
-          onClick={() => setCurrentTab(3)}
+          onClick={() => {
+            setCurrentTab(3);
+            navigate("/recent");
+          }}
         >
           <TbClock className="scale-[1.5]" />
           Recent

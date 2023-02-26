@@ -34,6 +34,7 @@ export default function Upload({ files }) {
     const fileCids = [];
 
     for (let file of files) {
+      console.log(file);
       const cid = await client.put([file]);
       fileCids.push({ cid, name: file.name, size: file.size });
     }

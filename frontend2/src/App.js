@@ -9,7 +9,8 @@ import UploadModal from "./Components/UploadModal";
 import { hideSpinner, showSpinner } from "./Slices/spinnerSlice";
 import { setUser } from "./Slices/userSlice";
 import "./App.styles.css";
-import { getRecent } from "./Slices/recentSlice";
+import { getFourRecent } from "./Slices/recentSlice";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ function App() {
       dispatch(showSpinner());
       setLoadStateComplete(false);
       await dispatch(setUser());
-      dispatch(getRecent());
+      dispatch(getFourRecent());
       setLoadStateComplete(true);
       dispatch(hideSpinner());
     }
@@ -46,11 +47,11 @@ function App() {
             uploadModalVisible ? "h-[100vh] overflow-hidden" : null
           }`}
         >
-          {/* <span>
+          <span>
             {downloadList.length > 0 &&
               `${downloadList.length} files selected.`}
           </span>
-          <span>{downloadList.length > 0 && <DownloadSelected />}</span> */}
+          <span>{downloadList.length > 0 && <DownloadSelected />}</span>
           <div className="h-[100vh]">
             <Navbar />
             <main className="main flex">
