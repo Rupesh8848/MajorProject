@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { baseUrl } from "../BaseUrl";
 import FileRenderer from "../Components/FileRenderer";
 import FolderRenderer from "../Components/FolderRenderer";
+import RecentlyOpened from "../Components/RecentlyOpened";
 import { setUserData } from "../Slices/userDataSlice";
 
 export default function FolderRoutes() {
@@ -21,10 +22,12 @@ export default function FolderRoutes() {
   return (
     !userData.loading && (
       <div>
+        {/* <RecentlyOpened /> */}
+
         <span>Folders:</span>
-        <FolderRenderer folders={userData.data.folders} />
+        <FolderRenderer folders={userData?.data?.folders} />
         <span>Files:</span>
-        <FileRenderer files={userData.data.files} />
+        <FileRenderer files={userData?.data?.files} />
       </div>
     )
   );

@@ -16,7 +16,7 @@ export default function MainContainerRoute() {
   }, []);
   return !User?.loading ? (
     <>
-      <RecentlyOpened />
+      {/* <RecentlyOpened /> */}
       <div className="">
         <div>Folders:</div>
         <FolderRenderer folders={User.data.folders} />
