@@ -12,11 +12,10 @@ import Lock from "../images/lock.jpg";
 import { addToRecent } from "../Slices/recentSlice";
 import moment from "moment";
 import FilePreview from "./FilePreview";
-import { defaultStyles, FileIcon } from "react-file-icon";
 
 export default function FileRenderer({ files }) {
   const { downloadList } = useSelector((state) => state.download);
-  console.log(downloadList);
+  // console.log(downloadList);
   const { sliderState } = useSelector((state) => state.slider);
   const dispatch = useDispatch();
 
@@ -36,9 +35,9 @@ export default function FileRenderer({ files }) {
               key={cid}
               className="flex  flex-col pb-4 items-center  border-[2px] inline-block w-fit rounded-[10px] cursor-pointer my-[20px] hover:bg-[rgb(240,240,240)] overflow-hidden"
             >
-              {console.log(
+              {/* {console.log(
                 `SliderState = ${sliderState}    FileState = ${file.protected}`
-              )}
+              )} */}
               <Link to={fileLink} target="_blank">
                 {file.protected === "public" ? (
                   !file.fileType ||

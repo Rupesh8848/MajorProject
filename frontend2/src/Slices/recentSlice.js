@@ -32,6 +32,7 @@ export const getFourRecent = createAsyncThunk(
     const response = await axios.get(
       `${baseUrl}/api/recent/${User.data._id}/recent`
     );
+    console.log(response.data);
     return response.data;
   }
 );

@@ -10,7 +10,6 @@ import { hideSpinner, showSpinner } from "./Slices/spinnerSlice";
 import { setUser } from "./Slices/userSlice";
 import "./App.styles.css";
 import { getFourRecent } from "./Slices/recentSlice";
-import { Route, Routes } from "react-router-dom";
 
 function App() {
   const dispatch = useDispatch();
@@ -28,8 +27,7 @@ function App() {
     async function main() {
       dispatch(showSpinner());
       setLoadStateComplete(false);
-      await dispatch(setUser());
-      dispatch(getFourRecent());
+      dispatch(setUser());
       setLoadStateComplete(true);
       dispatch(hideSpinner());
     }

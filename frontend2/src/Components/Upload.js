@@ -10,8 +10,9 @@ import { startEncryption } from "../encFunctions";
 import { createClient } from "../Utils/createClient";
 import { useDispatch, useSelector } from "react-redux";
 import { hideSpinner, showSpinner } from "../Slices/spinnerSlice";
+import { setUser } from "../Slices/userSlice";
 
-export default function Upload({ files }) {
+export default function Upload({ files, modalVisToggler }) {
   const [createFolder, setCreateFolder] = React.useState(false);
   const { sliderState } = useSelector((state) => state.slider);
   const [folderName, setFolderName] = React.useState("");
@@ -68,6 +69,8 @@ export default function Upload({ files }) {
     }
 
     // setLoaderState(false);
+    dispatch(setUser());
+    modalVisToggler(false);
     dispatch(hideSpinner());
   }
 
@@ -124,7 +127,8 @@ export default function Upload({ files }) {
     } catch (error) {
       console.log("Error adding file");
     }
-
+    dispatch(setUser());
+    modalVisToggler(false);
     dispatch(hideSpinner());
     // setLoaderState(false);
   }
