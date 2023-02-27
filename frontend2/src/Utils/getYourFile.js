@@ -8,7 +8,7 @@ export async function getYourFile(cid) {
   const client = createClient();
   console.log('hello i am running', client)
   const res = await client.get(cid);
-  console.log(await res);
+  console.log(res);
   const files = await res.files();
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
