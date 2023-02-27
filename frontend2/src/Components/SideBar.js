@@ -41,7 +41,10 @@ export default function SideBar({
               ? "bg-[rgb(197,208,227)] text-[rgb(64,104,192)]"
               : null
           }`}
-          onClick={() => setCurrentTab(2)}
+          onClick={() => {
+            setCurrentTab(2);
+            navigate("/shareWithMe");
+          }}
         >
           <MdOutlineGroup className="scale-[1.5]" /> Shared With Me
         </div>

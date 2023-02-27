@@ -10,10 +10,12 @@ import { hideSpinner, showSpinner } from "./Slices/spinnerSlice";
 import { setUser } from "./Slices/userSlice";
 import "./App.styles.css";
 import { getFourRecent } from "./Slices/recentSlice";
+import ShareModal from "./Components/ShareModal";
 
 function App() {
   const dispatch = useDispatch();
   const [uploadModalVisible, setUploadModalVisible] = React.useState(false);
+  const [shareModalVisible, setShareModalVisible] = React.useState(false);
 
   const [loadStateComplete, setLoadStateComplete] = React.useState(false); //checks if the data has been loaded at the begining of the app
 
@@ -50,6 +52,16 @@ function App() {
               `${downloadList.length} files selected.`}
           </span>
           <span>{downloadList.length > 0 && <DownloadSelected />}</span>
+          <span>
+            {downloadList.length > 0 && (
+              <div
+                onClick={() => setShareModalVisible(true)}
+                className="border-solid border-[2px] border-black w-full px-4 py-2 inline-block w-[70px] cursor-pointer mt-4 rounded-[10px] hover:bg-[rgb(64,107,159)] hover:text-white hover:shadow-sm transition-all"
+              >
+                Share
+              </div>
+            )}
+          </span>
           <div className="h-[100vh]">
             <Navbar />
             <main className="main flex">
@@ -63,8 +75,13 @@ function App() {
             </main>
           </div>
 
+          {/* <ShareModal /> */}
+
           {uploadModalVisible && (
             <UploadModal modalVisToggler={setUploadModalVisible} />
+          )}
+          {shareModalVisible && (
+            <ShareModal modalShareToggler={setShareModalVisible} />
           )}
         </div>
       )}
