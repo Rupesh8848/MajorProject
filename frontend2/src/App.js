@@ -42,15 +42,14 @@ function App() {
       {spinnerState === "show" && <Spinner />}
       {loadStateComplete && (
         <div
-          className={`${
-            uploadModalVisible ? "h-[100vh] overflow-hidden" : null
-          }`}
+          className={`${uploadModalVisible ? "h-[100vh] overflow-hidden" : null
+            }`}
         >
-          {/* <span>
+          <span>
             {downloadList.length > 0 &&
               `${downloadList.length} files selected.`}
           </span>
-          <span>{downloadList.length > 0 && <DownloadSelected />}</span> */}
+          <span>{downloadList.length > 0 && <DownloadSelected />}</span>
           <div className="h-[100vh]">
             <Navbar />
             <main className="main flex">
