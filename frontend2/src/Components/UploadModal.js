@@ -6,7 +6,7 @@ export default function UploadModal({ modalVisToggler }) {
   return (
     <div>
       <Modal modalVisToggler={modalVisToggler}>
-        <DropZone />
+        <DropZone modalVisToggler={modalVisToggler} />
       </Modal>
     </div>
   );

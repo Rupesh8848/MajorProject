@@ -25,6 +25,18 @@ export const getRecent = createAsyncThunk(
   }
 );
 
+export const getFourRecent = createAsyncThunk(
+  "get/fourRecent",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    const { User } = getState();
+    const response = await axios.get(
+      `${baseUrl}/api/recent/${User.data._id}/recent`
+    );
+    console.log(response.data);
+    return response.data;
+  }
+);
+
 const recentSlice = createSlice({
   name: "Recent",
   initialState: {},
@@ -53,6 +65,18 @@ const recentSlice = createSlice({
         state.loading = false;
         state.appErr = action?.payload?.message;
         state.serveErr = action?.error?.message;
+      })
+      .addCase(getFourRecent.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(getFourRecent.fulfilled, (state, action) => {
+        state.loading = false;
+        state.recentFour = action.payload;
+      })
+      .addCase(getFourRecent.rejected, (state, action) => {
+        state.loading = false;
+        state.recentFour.appErr = action?.payload?.message;
+        state.recentFour.serveErr = action?.error?.message;
       });
   },
 });

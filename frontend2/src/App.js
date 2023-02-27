@@ -9,7 +9,7 @@ import UploadModal from "./Components/UploadModal";
 import { hideSpinner, showSpinner } from "./Slices/spinnerSlice";
 import { setUser } from "./Slices/userSlice";
 import "./App.styles.css";
-import { getRecent } from "./Slices/recentSlice";
+import { getFourRecent } from "./Slices/recentSlice";
 
 function App() {
   const dispatch = useDispatch();
@@ -27,8 +27,7 @@ function App() {
     async function main() {
       dispatch(showSpinner());
       setLoadStateComplete(false);
-      await dispatch(setUser());
-      dispatch(getRecent());
+      dispatch(setUser());
       setLoadStateComplete(true);
       dispatch(hideSpinner());
     }

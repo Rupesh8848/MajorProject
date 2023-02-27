@@ -17,6 +17,9 @@ const fileSchema = new mongoose.Schema(
     protected: {
       type: String,
     },
+    fileType: {
+      type: String,
+    },
   },
   {
     toJSON: { virtuals: true },
