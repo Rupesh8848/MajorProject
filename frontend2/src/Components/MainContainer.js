@@ -4,6 +4,7 @@ import FolderRoutes from "../Routes/FolderRoutes";
 import MainContainerRoute from "../Routes/MainContainerRoute";
 import RecentFiles from "./RecentFiles";
 import RecentlyOpened from "./RecentlyOpened";
+import SharedWithMe from "./SharedWithMe";
 
 export default function MainContainer() {
   return (
@@ -12,10 +13,11 @@ export default function MainContainer() {
         {/* <RecentlyOpened /> */}
         <Routes>
           <Route path="/" element={<RecentlyOpened />}>
-            <Route path="/" element={<MainContainerRoute />} />
+            <Route index element={<MainContainerRoute />} />
             <Route path="/user/folder/:folderId" element={<FolderRoutes />} />
           </Route>
           <Route path="/recent" element={<RecentFiles />} />
+          <Route path="/shareWithMe" element={<SharedWithMe />} />
         </Routes>
       </div>
     </>

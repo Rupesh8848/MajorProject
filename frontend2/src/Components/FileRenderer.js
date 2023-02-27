@@ -15,7 +15,7 @@ import FilePreview from "./FilePreview";
 
 export default function FileRenderer({ files }) {
   const { downloadList } = useSelector((state) => state.download);
-  // console.log(downloadList);
+  // console.log(files);
   const { sliderState } = useSelector((state) => state.slider);
   const dispatch = useDispatch();
 
@@ -40,8 +40,8 @@ export default function FileRenderer({ files }) {
               )} */}
               <Link to={fileLink} target="_blank">
                 {file.protected === "public" ? (
-                  !file.fileType ||
-                  file.fileType.split("/").includes("image") ? (
+                  !file?.fileType ||
+                  file?.fileType.split("/").includes("image") ? (
                     <span onClick={() => handleClick(file.id, file.user)}>
                       <FileCard
                         imgLink={`https://${cid}.ipfs.w3s.link/${name}`}

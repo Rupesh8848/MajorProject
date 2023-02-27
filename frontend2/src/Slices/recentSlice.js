@@ -75,8 +75,8 @@ const recentSlice = createSlice({
       })
       .addCase(getFourRecent.rejected, (state, action) => {
         state.loading = false;
-        state.recentFour.appErr = action?.payload?.message;
-        state.recentFour.serveErr = action?.error?.message;
+        state.appErr = action?.payload?.message;
+        state.serveErr = action?.error?.message;
       });
   },
 });
