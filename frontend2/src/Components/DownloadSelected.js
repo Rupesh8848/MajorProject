@@ -4,13 +4,16 @@ import fileDownload from "js-file-download";
 import "./DownloadSelected.css";
 import { useDispatch, useSelector } from "react-redux";
 import { hideSpinner, showSpinner } from "../Slices/spinnerSlice";
-import { getYourFile } from "../Utils/getYourFile";
+import { getProtectedFile, getYourFile } from "../Utils/getYourFile";
+import { useLocation } from "react-router-dom";
 
 export default function DownloadSelected() {
   const dispatch = useDispatch();
   const { downloadList } = useSelector((state) => state.download);
   const urls = [];
+  const currentRoute = useLocation();
   const downloadSelected = async () => {
+    console.log(currentRoute);
     dispatch(showSpinner());
     for (let obj of downloadList) {
       const { cid, name } = obj;
@@ -18,7 +21,9 @@ export default function DownloadSelected() {
         let link = `https://${cid}.ipfs.w3s.link/${name}`;
         urls.push({ link, name });
       } else {
-        await getYourFile(cid);
+        currentRoute?.pathname === "/shareWithMe"
+          ? await getProtectedFile()
+          : await getYourFile(cid);
       }
     }
 

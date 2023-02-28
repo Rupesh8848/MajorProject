@@ -78,11 +78,13 @@ export default function ShareModal({ modalShareToggler }) {
       {receiverUserId.length === 42 && receiverUserId.startsWith("0x") && (
         <span
           // onClick={publicShareHandler}
-          onClick={
-            slider.sliderState === "public"
-              ? publicShareHandler
-              : privateShareHandler
-          }
+          onClick={() => {
+            if (slider.sliderState === "public") {
+              publicShareHandler();
+            } else if (slider.sliderState === "protected") {
+              privateShareHandler();
+            }
+          }}
           className="border-solid border-[2px] border-black px-4 py-2 inline-block w-[70px] cursor-pointer mt-4 rounded-[10px] hover:bg-[rgb(64,107,159)] hover:text-white hover:shadow-sm transition-all"
         >
           Share

@@ -39,4 +39,6 @@ export async function getYourFile(cid) {
   }
 }
 
-export async function getSharedFile(cid, key, iv) {}
+export async function getProtectedFile() {
+  console.log("New Download function");
+}
