@@ -27,6 +27,7 @@ export default function DownloadSelected() {
     for (let obj of downloadList) {
       const { cid, name } = obj;
       if (obj.protected === "public") {
+        console.log(cid)
         let link = `https://${cid}.ipfs.w3s.link/${name}`;
         urls.push({ link, name });
       } else {

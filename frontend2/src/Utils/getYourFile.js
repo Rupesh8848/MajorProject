@@ -6,6 +6,7 @@ import { startDecryption } from "../encFunctions";
 
 export async function getYourFile(cid) {
   const client = createClient();
+  console.log('hello i am running', client)
   const res = await client.get(cid);
   console.log(res);
   const files = await res.files();

@@ -43,9 +43,8 @@ function App() {
       {spinnerState === "show" && <Spinner />}
       {loadStateComplete && (
         <div
-          className={`${
-            uploadModalVisible ? "h-[100vh] overflow-hidden" : null
-          }`}
+          className={`${uploadModalVisible ? "h-[100vh] overflow-hidden" : null
+            }`}
         >
           <span>
             {downloadList.length > 0 &&
