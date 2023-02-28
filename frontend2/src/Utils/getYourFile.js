@@ -38,3 +38,5 @@ export async function getYourFile(cid) {
     console.log(error);
   }
 }
+
+export async function getSharedFile(cid, key, iv) {}
