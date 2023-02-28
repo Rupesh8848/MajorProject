@@ -59,4 +59,14 @@ const deleteFile = async (req, res) => {
   }
 };
 
-module.exports = { postFile, deleteFile };
+const getFileInfo = async (req, res) => {
+  const { fileCid } = req.params;
+  try {
+    const file = await fileModel
+      .findOne({ cid: fileCid })
+      .populate("user", "userMetaMaskId");
+    return res.json(file);
+  } catch (error) {}
+};
+
+module.exports = { postFile, deleteFile, getFileInfo };
