@@ -40,7 +40,7 @@ const getRecent = async (req, res) => {
     const data = await recentModel
       .find({ user })
       .populate("file")
-      .sort("-lastOpened");
+      .sort({ lastOpened: 1 });
     const dataToSend = data.map((element) => {
       const { file } = element;
       return {
@@ -61,9 +61,10 @@ const getFourRecent = async (req, res) => {
     const data = await recentModel
       .find({ user })
       .populate("file")
-      .sort("-lastOpened");
+      .sort({ lastOpened: 1 })
+      .limit(4);
     console.log(data);
-    const dataToSend = data.slice(0, 4).map((element) => {
+    const dataToSend = data.map((element) => {
       const { file } = element;
       return {
         ...file?._doc,
