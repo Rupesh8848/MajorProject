@@ -32,14 +32,20 @@ export const getFourRecent = createAsyncThunk(
     const response = await axios.get(
       `${baseUrl}/api/recent/${User.data._id}/recent`
     );
-    console.log(response.data);
     return response.data;
   }
 );
 
+const initialState = { loading: false };
+
 const recentSlice = createSlice({
   name: "Recent",
-  initialState: {},
+  initialState: initialState,
+  reducers: {
+    clearRecent(state, action) {
+      state.data = [];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(addToRecent.pending, (state, action) => {
@@ -75,10 +81,11 @@ const recentSlice = createSlice({
       })
       .addCase(getFourRecent.rejected, (state, action) => {
         state.loading = false;
-        state.appErr = action?.payload?.message;
-        state.serveErr = action?.error?.message;
+        state.recentFour.appErr = action?.payload?.message;
+        state.recentFour.serveErr = action?.error?.message;
       });
   },
 });
 
 export default recentSlice.reducer;
+export const { clearRecent } = recentSlice.actions;

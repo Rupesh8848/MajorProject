@@ -12,10 +12,10 @@ export default function MainContainer() {
       <div className="pl-8 ">
         {/* <RecentlyOpened /> */}
         <Routes>
-          <Route path="/" element={<RecentlyOpened />}>
-            <Route index element={<MainContainerRoute />} />
-            <Route path="/user/folder/:folderId" element={<FolderRoutes />} />
-          </Route>
+          <Route index element={<MainContainerRoute />} />
+          <Route path="/user/folder/:folderId" element={<FolderRoutes />} />
+          {/* <Route path="/" element={<RecentlyOpened />}>
+          </Route> */}
           <Route path="/recent" element={<RecentFiles />} />
           <Route path="/shareWithMe" element={<SharedWithMe />} />
         </Routes>

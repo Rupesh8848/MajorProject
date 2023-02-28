@@ -4,6 +4,8 @@ import { MdOutlineGroup } from "react-icons/md";
 import { TbClock } from "react-icons/tb";
 import { FiHardDrive } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { clearRecent } from "../Slices/recentSlice";
 
 export default function SideBar({
   setUploadModalVisible,
@@ -11,6 +13,7 @@ export default function SideBar({
   setCurrentTab,
 }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   return (
     <section className="flex flex-col border-r-[1px] pr-[1rem] pt-4 h-[100%] bg-white ">
       <div
@@ -29,6 +32,7 @@ export default function SideBar({
           }`}
           onClick={() => {
             setCurrentTab(1);
+            dispatch(clearRecent());
             navigate("/");
           }}
         >
@@ -43,6 +47,7 @@ export default function SideBar({
           }`}
           onClick={() => {
             setCurrentTab(2);
+            dispatch(clearRecent());
             navigate("/shareWithMe");
           }}
         >

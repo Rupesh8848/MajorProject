@@ -55,7 +55,7 @@ function App() {
             {downloadList.length > 0 && (
               <div
                 onClick={() => setShareModalVisible(true)}
-                className="border-solid border-[2px] border-black w-full px-4 py-2 inline-block w-[70px] cursor-pointer mt-4 rounded-[10px] hover:bg-[rgb(64,107,159)] hover:text-white hover:shadow-sm transition-all"
+                className="border-solid border-[2px] border-black px-4 py-2 inline-block w-[70px] cursor-pointer mt-4 rounded-[10px] hover:bg-[rgb(64,107,159)] hover:text-white hover:shadow-sm transition-all"
               >
                 Share
               </div>
