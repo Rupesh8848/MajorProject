@@ -39,7 +39,7 @@ export async function getYourFile(cid) {
   }
 }
 
-export async function getProtectedFile() {
+export async function getProtectedFile(cid) {
   console.log("New Download function");
   const client = createClient();
   const res = await client.get(cid);
