@@ -22,7 +22,7 @@ export default function DownloadSelected() {
         urls.push({ link, name });
       } else {
         currentRoute?.pathname === "/shareWithMe"
-          ? await getProtectedFile()
+          ? await getProtectedFile(cid)
           : await getYourFile(cid);
       }
     }
