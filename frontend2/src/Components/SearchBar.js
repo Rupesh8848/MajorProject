@@ -1,12 +1,13 @@
+
 import React from "react";
 import { FaSearch } from "react-icons/fa";
+import { encryptKeyIV, decryptKeyIV } from "../Utils/getPublicKey";
 
 
 export default function SearchBar() {
   const [search, setSearch] = React.useState("");
-  function handleChange(event) {
+  async function handleChange(event) {
     setSearch(event.target.value);
-
   }
   return (
     <div className="border-[1px] w-[40%] flex h-[48px] px-4 gap-4 rounded-[10px] ">
