@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { hideSpinner, showSpinner } from "../Slices/spinnerSlice";
 import { setUser } from "../Slices/userSlice";
 import { useLocation } from "react-router-dom";
+import { encryptKeyIV, getPublicKeyFromMetaMask } from "../Utils/getPublicKey";
 
 export default function Upload({ files, modalVisToggler }) {
   const [createFolder, setCreateFolder] = React.useState(false);
@@ -104,6 +105,15 @@ export default function Upload({ files, modalVisToggler }) {
 
     for (let file of files) {
       var { enc, iv, key } = await startEncryption(file);
+
+      console.log(`Real Key: ${key} \n Real IV: ${iv}`);
+      console.log(`Type of IV: ${typeof iv}`);
+
+      var { encKey, encIV } = await encryptKeyIV(
+        key,
+        iv,
+        User?.data?.publicKey
+      );
       const cid = await client.put([enc]);
       fileCids.push({
         cid,
@@ -142,13 +152,13 @@ export default function Upload({ files, modalVisToggler }) {
       for (let fileObj of fileCids) {
         const buffer = Buffer.from(iv.buffer);
         const inv = buffer.toString("hex");
-        // const response = await contract.addcid(
-        //   fileObj.cid,
-        //   fileObj.name,
-        //   key,
-        //   inv
-        // );
-        // await response.wait();
+        const response = await contract.addcid(
+          fileObj.cid,
+          fileObj.name,
+          encKey,
+          encIV
+        );
+        await response.wait();
         if (!createFolder && !isInsideFolder) {
           await uploadFileToDb({ fileObj, user });
         } else if (!createFolder && isInsideFolder) {

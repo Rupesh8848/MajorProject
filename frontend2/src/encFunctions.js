@@ -97,14 +97,22 @@ export const startDecryption = async (cipherText, password, iv) => {
   let digest = getDigest(password);
   let rawFile = getFile(cipherText);
   // let iv = getiv();
-  await Promise.all([digest, "", rawFile]).then((values) => {
-    // generate a crypto key
-    getKey(values[0]).then((resp) => {
-      decryptFile(resp, iv, values[2]).then((file) => {
-        console.log(file);
-        let fileBlob = new Blob([file], { type: file.type });
-        fileDownload(fileBlob, cipherText.name);
+  console.log(
+    `Decrypted Key and IV from inside startDecryption function: \n ${password} \n ${iv}`
+  );
+
+  try {
+    await Promise.all([digest, "", rawFile]).then((values) => {
+      // generate a crypto key
+      getKey(values[0]).then((resp) => {
+        decryptFile(resp, iv, values[2]).then((file) => {
+          console.log(file);
+          let fileBlob = new Blob([file], { type: file.type });
+          fileDownload(fileBlob, cipherText.name);
+        });
       });
     });
-  });
+  } catch (error) {
+    console.log(error);
+  }
 };

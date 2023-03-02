@@ -3,8 +3,9 @@ import { Address } from "./ContractAddress";
 import { createClient } from "./createClient";
 import PrivateABI from "../Utils/PrivateABI.json";
 import { startDecryption } from "../encFunctions";
+import { decryptKeyIV } from "./getPublicKey";
 
-export async function getYourFile(cid) {
+export async function getYourFile(cid, publicKey) {
   const client = createClient();
   const res = await client.get(cid);
   console.log(res);
@@ -20,14 +21,26 @@ export async function getYourFile(cid) {
 
   const array = await contract.getusercid(accounts[0]);
   console.log(array);
-  var key, iv;
-  array.forEach((fileObj) => {
+  // var key, iv;
+  // array.forEach((fileObj) => {
+  //   if (fileObj.CID === cid) {
+  //     console.log(fileObj);
+
+  //     key = fileObj.key;
+  //     iv = fileObj.iv;
+  //   }
+  // });
+  for (let fileObj of array) {
     if (fileObj.CID === cid) {
       console.log(fileObj);
-      key = fileObj.key;
-      iv = fileObj.iv;
+      var { key, iv } = await decryptKeyIV(fileObj.key, fileObj.iv);
+      iv = iv.split(",");
+      // console.log(`Type of IV: ${typeof iv}`);
+      // console.log(`Decrypted Key and IV \n ${key} \n ${iv}`);
+      // key = fileObj.key;
+      // iv = fileObj.iv;
     }
-  });
+  }
   try {
     const buffer = Buffer.from(iv, "hex");
     const inv = new Uint8Array(buffer);
@@ -74,4 +87,3 @@ export async function getProtectedFile(cid) {
     console.log(error);
   }
 }
-

@@ -12,6 +12,9 @@ export default function DownloadSelected() {
   const { downloadList } = useSelector((state) => state.download);
   const urls = [];
   const currentRoute = useLocation();
+
+  const { User } = useSelector((state) => state);
+
   const downloadSelected = async () => {
     console.log(currentRoute);
     dispatch(showSpinner());
@@ -23,7 +26,7 @@ export default function DownloadSelected() {
       } else {
         currentRoute?.pathname === "/shareWithMe"
           ? await getProtectedFile(cid)
-          : await getYourFile(cid);
+          : await getYourFile(cid, User.data.publicKey);
       }
     }
 

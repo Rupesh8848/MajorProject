@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { baseUrl } from "../BaseUrl";
 import { connectMetaMask } from "../setup";
+import { getPublicKeyFromUserAccount } from "../Utils/getPublicKey";
 import { setUserData } from "./userDataSlice";
 
 export const setUser = createAsyncThunk(
@@ -10,13 +11,17 @@ export const setUser = createAsyncThunk(
     try {
       const userMetaMaskId = await connectMetaMask();
       const response = await axios.get(`${baseUrl}/api/user/${userMetaMaskId}`);
+      const userPublicKey = await getPublicKeyFromUserAccount(
+        response.data.userMetaMaskId
+      );
       dispatch(
         setUserData({
           files: response.data.files,
           folders: response.data.folders,
         })
       );
-      return response.data;
+
+      return { ...response.data, publicKey: userPublicKey };
     } catch (error) {
       if (!error?.response) {
         throw error;

@@ -9,10 +9,13 @@ import UploadModal from "./Components/UploadModal";
 import { hideSpinner, showSpinner } from "./Slices/spinnerSlice";
 import { setUser } from "./Slices/userSlice";
 import "./App.styles.css";
-import { getFourRecent } from "./Slices/recentSlice";
 import ShareModal from "./Components/ShareModal";
 import { useLocation } from "react-router-dom";
 import { updateRoute } from "./Slices/routeSlice";
+import {
+  getPublicKey,
+  getPublicKeyFromUserAccount,
+} from "./Utils/getPublicKey";
 
 function App() {
   const dispatch = useDispatch();
@@ -22,6 +25,7 @@ function App() {
   const [loadStateComplete, setLoadStateComplete] = React.useState(false); //checks if the data has been loaded at the begining of the app
 
   const { spinnerState } = useSelector((state) => state.spinner);
+  const { User } = useSelector((state) => state);
 
   const { downloadList } = useSelector((state) => state.download);
 
@@ -31,14 +35,12 @@ function App() {
     async function main() {
       dispatch(showSpinner());
       setLoadStateComplete(false);
-      dispatch(setUser());
+      await dispatch(setUser());
       setLoadStateComplete(true);
       dispatch(hideSpinner());
     }
     main();
   }, []);
-
-  // console.log(User);
 
   return (
     <>
