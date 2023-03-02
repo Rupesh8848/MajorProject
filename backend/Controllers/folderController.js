@@ -23,21 +23,44 @@ const addFolder = async (req, res) => {
   }
 };
 
-const updateFolder = async (req, res) => {
-  const { folderId } = req.params;
-  const { fileIds } = req.body;
-  for (let file in fileIds) {
-    await folderModel.findByIdAndUpdate(folderId, {
-      $push: { contains: file },
+const nestedFolder = async (req, res) => {
+  const { parentFolder } = req.params;
+  console.log("Req inside nested folder");
+  console.log(`Parent Folder: ${parentFolder}`);
+  const { name, user } = req.body;
+  try {
+    const folder = await folderModel.create({
+      name,
+      user,
     });
+
+    await folderModel.findByIdAndUpdate(
+      parentFolder,
+      {
+        $push: { folders: folder._id },
+      },
+      { new: true, upsert: true }
+    );
+    return res.json(folder);
+  } catch (error) {
+    return res.json({ message: "Error Adding Folder", error });
   }
 };
 
 const getFolderContains = async (req, res) => {
   const { folderId } = req.params;
   console.log("Request received: ", folderId);
-  const response = await folderModel.findById(folderId).populate("contains");
+  const response = await folderModel
+    .findById(folderId)
+    .populate("contains")
+    .populate("folders");
   return res.json(response);
 };
 
-module.exports = { addFolder, updateFolder, getFolderContains };
+module.exports = {
+  addFolder,
+  // updateFolder,
+  getFolderContains,
+  nestedFolder,
+  // addFileToFolder,
+};

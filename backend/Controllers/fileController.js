@@ -3,7 +3,8 @@ const { folderModel } = require("../Model/folderModel");
 const { userModel } = require("../Model/userModel");
 
 const postFile = async (req, res) => {
-  const { name, cid, size, user, containingFolder, protected } = req.body;
+  const { name, cid, size, user, containingFolder, protected, fileType } =
+    req.body;
   console.log(req.body);
   try {
     const file = await fileModel.create({
@@ -11,6 +12,7 @@ const postFile = async (req, res) => {
       cid,
       size,
       user,
+      fileType,
       containingFolder: containingFolder ? containingFolder : null,
       protected: protected === "protected" ? "protected" : "public",
     });
@@ -35,6 +37,7 @@ const postFile = async (req, res) => {
 
     return res.json("File Added");
   } catch (error) {
+    console.log(error);
     return res.json("Error adding file.", error);
   }
 };
@@ -56,4 +59,14 @@ const deleteFile = async (req, res) => {
   }
 };
 
-module.exports = { postFile, deleteFile };
+const getFileInfo = async (req, res) => {
+  const { fileCid } = req.params;
+  try {
+    const file = await fileModel
+      .findOne({ cid: fileCid })
+      .populate("user", "userMetaMaskId");
+    return res.json(file);
+  } catch (error) {}
+};
+
+module.exports = { postFile, deleteFile, getFileInfo };

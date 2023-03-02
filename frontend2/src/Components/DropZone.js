@@ -9,8 +9,8 @@ const thumb = {
   border: "1px solid #eaeaea",
   marginBottom: 8,
   marginRight: 8,
-  width: 100,
-  height: 100,
+  width: 200,
+  height: 200,
   padding: 4,
   boxSizing: "border-box",
 };
@@ -27,7 +27,7 @@ const img = {
   height: "100%",
 };
 
-export function DropZone() {
+export function DropZone({ modalVisToggler }) {
   const [files, setFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles) => {
@@ -61,9 +61,8 @@ export function DropZone() {
     return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
   }, []);
 
-  useEffect(() => {
-    console.log(files);
-  }, [files]);
+  console.log(files);
+
   return (
     <>
       <section className="container">
@@ -73,7 +72,7 @@ export function DropZone() {
         </div>
         <aside className="thumbsContainer">{thumbs}</aside>
       </section>
-      <Upload files={files} />
+      <Upload files={files} modalVisToggler={modalVisToggler} />
     </>
   );
 }
