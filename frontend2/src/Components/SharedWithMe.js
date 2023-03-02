@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { updateRoute } from "../Slices/routeSlice";
 import {
   getFilesSharedWithMe,
   getProtectedFilesSharedWithMe,
@@ -16,6 +17,7 @@ export default function SharedWithMe() {
     slider.sliderState === "public"
       ? dispatch(getFilesSharedWithMe())
       : dispatch(getProtectedFilesSharedWithMe());
+    dispatch(updateRoute(["sharedWithMe"]));
   }, [slider.sliderState]);
 
   return (

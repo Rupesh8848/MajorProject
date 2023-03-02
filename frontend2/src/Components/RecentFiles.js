@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getRecent } from "../Slices/recentSlice";
+import { updateRoute } from "../Slices/routeSlice";
 import FileRenderer from "./FileRenderer";
 
 export default function RecentFiles() {
@@ -9,6 +10,7 @@ export default function RecentFiles() {
   //   data.dataToSend => []
   React.useEffect(() => {
     dispatch(getRecent());
+    dispatch(updateRoute(["recent"]));
   }, []);
   return data?.loading ? (
     <div>Loading Data</div>

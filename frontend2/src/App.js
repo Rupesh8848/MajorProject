@@ -11,6 +11,8 @@ import { setUser } from "./Slices/userSlice";
 import "./App.styles.css";
 import { getFourRecent } from "./Slices/recentSlice";
 import ShareModal from "./Components/ShareModal";
+import { useLocation } from "react-router-dom";
+import { updateRoute } from "./Slices/routeSlice";
 
 function App() {
   const dispatch = useDispatch();

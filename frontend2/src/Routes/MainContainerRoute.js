@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FileRenderer from "../Components/FileRenderer";
 import FolderRenderer from "../Components/FolderRenderer";
 import RecentlyOpened from "../Components/RecentlyOpened";
+import { updateRoute } from "../Slices/routeSlice";
 import { setUser } from "../Slices/userSlice";
 
 export default function MainContainerRoute() {
@@ -11,6 +12,7 @@ export default function MainContainerRoute() {
   React.useEffect(() => {
     async function getUserRoot() {
       disptach(setUser());
+      disptach(updateRoute(["root"]));
     }
     getUserRoot();
   }, []);

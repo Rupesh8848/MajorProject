@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import DownloadSlice from "../Slices/DownloadSlice";
 import recentSlice from "../Slices/recentSlice";
+import routeSlice from "../Slices/routeSlice";
 import SharedWithMeSlice from "../Slices/SharedWithMeSlice";
 import sliderSlice from "../Slices/sliderSlice";
 import spinnerSlice from "../Slices/spinnerSlice";
@@ -16,6 +17,7 @@ const Store = configureStore({
     download: DownloadSlice,
     recent: recentSlice,
     sharedWithMe: SharedWithMeSlice,
+    route: routeSlice,
   },
 });
 

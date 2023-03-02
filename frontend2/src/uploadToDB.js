@@ -14,6 +14,18 @@ export const uploadFileToDb = async ({ fileObj, user }) => {
   console.log(response);
 };
 
+export const uploadFileToNestedFolder = async ({ fileObj, user, folderId }) => {
+  const response = await axios.post(`${baseUrl}/api/file`, {
+    name: fileObj.name,
+    cid: fileObj.cid,
+    size: fileObj.size,
+    user: user._id,
+    containingFolder: folderId,
+    protected: fileObj.protected,
+  });
+  console.log(response);
+};
+
 export const uploadFolderToDb = async ({ folderName, user }) => {
   const response = await axios.post(`${baseUrl}/api/folder`, {
     folderName,

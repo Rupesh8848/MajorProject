@@ -5,12 +5,17 @@ import PublicABI from "../Utils/PublicABI.json";
 import PrivateABI from "../Utils/PrivateABI.json";
 import axios from "axios";
 import { baseUrl } from "../BaseUrl";
-import { uploadFileToDb, uploadFileToFolder } from "../uploadToDB";
+import {
+  uploadFileToDb,
+  uploadFileToFolder,
+  uploadFileToNestedFolder,
+} from "../uploadToDB";
 import { startEncryption } from "../encFunctions";
 import { createClient } from "../Utils/createClient";
 import { useDispatch, useSelector } from "react-redux";
 import { hideSpinner, showSpinner } from "../Slices/spinnerSlice";
 import { setUser } from "../Slices/userSlice";
+import { useLocation } from "react-router-dom";
 
 export default function Upload({ files, modalVisToggler }) {
   const [createFolder, setCreateFolder] = React.useState(false);
@@ -18,13 +23,17 @@ export default function Upload({ files, modalVisToggler }) {
   const [folderName, setFolderName] = React.useState("");
   const client = createClient();
 
-  const { User } = useSelector((state) => state);
+  const { User, route } = useSelector((state) => state);
+
   const user = User.data;
 
   const dispatch = useDispatch();
 
   async function handleFileUpload() {
     dispatch(showSpinner());
+
+    const isInsideFolder = route.data.includes("folder");
+
     const fileCids = [];
 
     for (let file of files) {
@@ -48,17 +57,30 @@ export default function Upload({ files, modalVisToggler }) {
     );
     try {
       console.log(fileCids);
-      if (createFolder) {
-        var folderObj = await axios.post(`${baseUrl}/api/folder`, {
+      var folderObj;
+      if (createFolder && !isInsideFolder) {
+        folderObj = await axios.post(`${baseUrl}/api/folder`, {
           name: folderName,
           user,
         });
+      } else if (createFolder && isInsideFolder) {
+        console.log("This got fired");
+        folderObj = await axios.post(
+          `${baseUrl}/api/folder/nestedFolder/${route.data[3]}`,
+          {
+            name: folderName,
+            user,
+          }
+        );
       }
       for (let fileObj of fileCids) {
-        const response = await contract.addcid(fileObj.cid, fileObj.name);
-        await response.wait();
-        if (!createFolder) {
+        // const response = await contract.addcid(fileObj.cid, fileObj.name);
+        // await response.wait();
+        if (!createFolder && !isInsideFolder) {
           await uploadFileToDb({ fileObj, user });
+        } else if (!createFolder && isInsideFolder) {
+          const folderId = route.data[3];
+          await uploadFileToNestedFolder({ fileObj, user, folderId });
         } else {
           await uploadFileToFolder({ fileObj, user, folderObj });
         }
@@ -78,6 +100,7 @@ export default function Upload({ files, modalVisToggler }) {
     // setLoaderState(true);
     dispatch(showSpinner());
     const fileCids = [];
+    const isInsideFolder = route.data.includes("folder");
 
     for (let file of files) {
       var { enc, iv, key } = await startEncryption(file);
@@ -100,25 +123,37 @@ export default function Upload({ files, modalVisToggler }) {
     );
     try {
       console.log(fileCids);
-      if (createFolder) {
-        var folderObj = await axios.post(`${baseUrl}/api/folder`, {
+      var folderObj;
+      if (createFolder && !isInsideFolder) {
+        folderObj = await axios.post(`${baseUrl}/api/folder`, {
           name: folderName,
           user,
         });
+      } else if (createFolder && isInsideFolder) {
+        console.log("This got fired");
+        folderObj = await axios.post(
+          `${baseUrl}/api/folder/nestedFolder/${route.data[3]}`,
+          {
+            name: folderName,
+            user,
+          }
+        );
       }
       for (let fileObj of fileCids) {
         const buffer = Buffer.from(iv.buffer);
         const inv = buffer.toString("hex");
-        const response = await contract.addcid(
-          fileObj.cid,
-          fileObj.name,
-          key,
-          inv
-        );
-        await response.wait();
-        if (!createFolder) {
-          console.log(fileObj);
+        // const response = await contract.addcid(
+        //   fileObj.cid,
+        //   fileObj.name,
+        //   key,
+        //   inv
+        // );
+        // await response.wait();
+        if (!createFolder && !isInsideFolder) {
           await uploadFileToDb({ fileObj, user });
+        } else if (!createFolder && isInsideFolder) {
+          const folderId = route.data[3];
+          await uploadFileToNestedFolder({ fileObj, user, folderId });
         } else {
           await uploadFileToFolder({ fileObj, user, folderObj });
         }

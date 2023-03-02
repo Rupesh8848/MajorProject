@@ -1,13 +1,13 @@
 const express = require("express");
 const {
   addFolder,
-  updateFolder,
   getFolderContains,
+  nestedFolder,
 } = require("../Controllers/folderController");
 const folderRoute = express.Router();
 
 folderRoute.post("/", addFolder);
-folderRoute.put("/:folderId", updateFolder);
 folderRoute.get("/:folderId", getFolderContains);
+folderRoute.post("/nestedFolder/:parentFolder", nestedFolder);
 
 module.exports = { folderRoute };
