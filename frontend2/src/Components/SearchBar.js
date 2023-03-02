@@ -1,7 +1,6 @@
 
 import React from "react";
 import { FaSearch } from "react-icons/fa";
-import { encryptKeyIV, decryptKeyIV } from "../Utils/getPublicKey";
 
 
 export default function SearchBar() {
