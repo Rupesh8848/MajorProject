@@ -1,9 +1,11 @@
+
 import React from "react";
 import { FaSearch } from "react-icons/fa";
 
+
 export default function SearchBar() {
   const [search, setSearch] = React.useState("");
-  function handleChange(event) {
+  async function handleChange(event) {
     setSearch(event.target.value);
   }
   return (
