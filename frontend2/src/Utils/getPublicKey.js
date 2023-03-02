@@ -8,7 +8,9 @@ export default async function getPublicKey() {
                 method: 'eth_getEncryptionPublicKey',
                 params: [account],
             })
+            console.log(publicKey);
             return publicKey;
+
 
         } catch (error) {
             console.log({ error })
