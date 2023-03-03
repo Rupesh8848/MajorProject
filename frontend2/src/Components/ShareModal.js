@@ -54,7 +54,7 @@ export default function ShareModal({ modalShareToggler }) {
 
       let publicKey = await contract.getpublickey(receiverUserId);
 
-      console.log("Public Key", publicKey);
+      // console.log("Public Key", publicKey);
 
       const { encKey, encIV } = await encryptKeyIV(key, iv, publicKey);
 
