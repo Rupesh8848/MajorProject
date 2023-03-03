@@ -6,6 +6,7 @@ import PublicABI from "../Utils/PublicABI.json";
 import PrivateABI from "../Utils/PrivateABI.json";
 import Modal from "./Modal";
 import { useSelector } from "react-redux";
+import { decryptKeyIV, encryptKeyIV } from "../Utils/getPublicKey";
 
 export default function ShareModal({ modalShareToggler }) {
   const [receiverUserId, setReceiverUserId] = React.useState("");
@@ -43,6 +44,24 @@ export default function ShareModal({ modalShareToggler }) {
     const filesToShare = [];
     for (let obj of downloadList) {
       const filteredRes = res.filter((element) => element.CID === obj.cid);
+
+      console.log(filteredRes[0].key);
+      var { key, iv } = await decryptKeyIV(
+        filteredRes[0].key,
+        filteredRes[0].iv
+      );
+      iv = iv.split(",");
+
+      let publicKey = await contract.getpublickey(receiverUserId);
+
+      console.log("Public Key", publicKey);
+
+      const { encKey, encIV } = await encryptKeyIV(key, iv, publicKey);
+
+      key = encKey;
+      iv = encIV;
+
+      // console.log(publicKey);
       filesToShare.push(...filteredRes);
     }
 

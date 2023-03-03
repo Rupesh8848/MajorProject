@@ -21,24 +21,12 @@ export async function getYourFile(cid, publicKey) {
 
   const array = await contract.getusercid(accounts[0]);
   console.log(array);
-  // var key, iv;
-  // array.forEach((fileObj) => {
-  //   if (fileObj.CID === cid) {
-  //     console.log(fileObj);
 
-  //     key = fileObj.key;
-  //     iv = fileObj.iv;
-  //   }
-  // });
   for (let fileObj of array) {
     if (fileObj.CID === cid) {
       console.log(fileObj);
       var { key, iv } = await decryptKeyIV(fileObj.key, fileObj.iv);
       iv = iv.split(",");
-      // console.log(`Type of IV: ${typeof iv}`);
-      // console.log(`Decrypted Key and IV \n ${key} \n ${iv}`);
-      // key = fileObj.key;
-      // iv = fileObj.iv;
     }
   }
   try {
@@ -52,8 +40,7 @@ export async function getYourFile(cid, publicKey) {
   }
 }
 
-export async function getProtectedFile(cid) {
-  console.log("New Download function");
+export async function getProtectedFile(cid, publicKey) {
   const client = createClient();
   const res = await client.get(cid);
   console.log(res);
@@ -69,14 +56,13 @@ export async function getProtectedFile(cid) {
 
   const array = await contract.getsharedwithuser(accounts[0]);
   console.log(array);
-  var key, iv;
-  array.forEach((fileObj) => {
+  for (let fileObj of array) {
     if (fileObj.CID === cid) {
       console.log(fileObj);
-      key = fileObj.key;
-      iv = fileObj.iv;
+      var { key, iv } = await decryptKeyIV(fileObj.key, fileObj.iv);
+      iv = iv.split(",");
     }
-  });
+  }
   try {
     const buffer = Buffer.from(iv, "hex");
     const inv = new Uint8Array(buffer);

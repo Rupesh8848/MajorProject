@@ -25,7 +25,7 @@ export default function DownloadSelected() {
         urls.push({ link, name });
       } else {
         currentRoute?.pathname === "/shareWithMe"
-          ? await getProtectedFile(cid)
+          ? await getProtectedFile(cid, User.data.publicKey)
           : await getYourFile(cid, User.data.publicKey);
       }
     }
