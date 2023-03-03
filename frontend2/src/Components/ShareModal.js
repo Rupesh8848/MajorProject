@@ -58,14 +58,18 @@ export default function ShareModal({ modalShareToggler }) {
 
       const { encKey, encIV } = await encryptKeyIV(key, iv, publicKey);
 
-      // key = encKey;
-      // iv = encIV;
+      key = encKey;
+      iv = encIV;
 
-      filteredRes[0].key = encKey;
-      filteredRes[0].iv = encIV;
-
+      const updatedFile = {
+        name: filteredRes[0].name,
+        CID: filteredRes[0].CID,
+        key: key,
+        iv: iv,
+      };
+      console.log(`Filtered Res: `, filteredRes[0].key);
       // console.log(publicKey);
-      filesToShare.push(...filteredRes);
+      filesToShare.push(updatedFile);
     }
 
     console.log(filesToShare);
